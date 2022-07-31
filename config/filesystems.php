@@ -78,7 +78,7 @@ return [
 	       // 'password' => env('SFTP_PASSWORD'),
 
 	        // Optional SFTP Settings...
-	        // 'port' => env('SFTP_PORT', 22),
+	         'port' => env('SFTP_PORT', 22),
 	        // 'root' => env('SFTP_ROOT'),
 	        // 'timeout' => 30,
         ],
