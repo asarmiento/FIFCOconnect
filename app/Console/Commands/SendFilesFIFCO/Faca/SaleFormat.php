@@ -100,7 +100,8 @@ class SaleFormat extends Command
 
 		$local = Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt");
 
-	Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
+	//Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
+	Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas31072022.txt",fopen($local,'r+'));
 
 		fclose($local);
 	}

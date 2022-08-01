@@ -57,7 +57,8 @@ $date = Carbon::now()->format('d/m/Y');
 
 	    $local = Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."productsFormat.txt");
 
-	    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."inventario".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
+	  //  Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."inventario".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
+	    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."inventario31072022.txt",fopen($local,'r+'));
 
     }
 }
