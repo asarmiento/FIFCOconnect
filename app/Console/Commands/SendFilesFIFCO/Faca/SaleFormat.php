@@ -43,7 +43,7 @@ class SaleFormat extends Command
 	public function handle()
 	{
 		set_time_limit(0);
-		ini_set('memory_limit','44G');
+		ini_set('memory_limit','94G');
 		$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 		$invoices=Invoice::where('invoice_type_id',2)->where('ind_estado','aceptado')->whereBetween('date',['2021-01-01','2022-07-31'])->get();
 		Log::info("ventas ".json_encode($invoices));
@@ -95,7 +95,7 @@ class SaleFormat extends Command
 				$code=$product['code'];
 				$description=$product['description'];
 				$units_per_box=$product['units_per_box'];
-				
+
 				$texto="CR|$sysconf->code|$idCustomer|$codeCustomer|$customer->company_name|$customer->address|$customer->phone|||$barcode|$code|$description|$productBy->delivered|$productBy->subtotal|$productBy->m_total|$units_per_box|$datePresale|$date|$codeProvince|$codeCanton|$codeDistrict|$chanel|$zone||$invoice->numeration|$type|AV\n";
 				fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
 			}
