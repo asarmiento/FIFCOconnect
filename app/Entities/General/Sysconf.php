@@ -9,6 +9,7 @@
 namespace App\Entities\General;
 
 
+use App\Entities\General\BranchOffice;
 use App\Entities\Customers\Customer;
 use App\Entities\Entity;
 use App\Entities\Invoices\Invoice;
