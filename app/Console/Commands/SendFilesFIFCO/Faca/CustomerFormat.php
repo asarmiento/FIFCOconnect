@@ -89,8 +89,8 @@ class CustomerFormat extends Command
 
 	    $local = Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."customersFormat.txt");
 
-	  //  Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."clientes".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
-	    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."clientes31072022.txt",fopen($local,'r+'));
+	    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."clientes".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
+	    //Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."clientes02082022.txt",fopen($local,'r+'));
 
     }
 }

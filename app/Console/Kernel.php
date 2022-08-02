@@ -26,13 +26,13 @@ class Kernel extends ConsoleKernel
 	     */
 
 	    $schedule->command('friendly:CustomerFormat')
-		    ->dailyAt('23:00');
+		    ->everyMinute();
 	    $schedule->command('friendly:cameraFormat')
-		    ->dailyAt('23:00');
+		    ->everyMinute();
 	    $schedule->command('friendly:productFormat')
-		    ->dailyAt('23:00');
+		    ->everyMinute();
 	    $schedule->command('friendly:saleFormat')
-		    ->dailyAt('23:00');
+		    ->everyMinute();
         // $schedule->command('inspire')->hourly();
     }
 

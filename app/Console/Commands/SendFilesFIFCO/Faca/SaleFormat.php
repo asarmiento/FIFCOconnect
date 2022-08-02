@@ -45,7 +45,7 @@ class SaleFormat extends Command
 		set_time_limit(0);
 		ini_set('memory_limit','94G');
 		$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
-		$invoices=Invoice::where('invoice_type_id',2)->where('ind_estado','aceptado')->whereBetween('date',['2021-01-01','2022-07-31'])->get();
+		$invoices=Invoice::where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date',Carbon::now()->toDateString())->get();
 		Log::info("ventas ".json_encode($invoices));
 		$sysconf=Sysconf::first();
 		foreach ($invoices AS $invoice) {
@@ -105,9 +105,8 @@ class SaleFormat extends Command
 
 		$local = Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt");
 
-	//Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
-	Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas31072022.txt",fopen($local,'r+'));
+	Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
+	//Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas02082022.txt",fopen($local,'r+'));
 
-		fclose($local);
 	}
 }
