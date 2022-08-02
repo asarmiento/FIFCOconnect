@@ -59,9 +59,10 @@ class ProductsFormat extends Command
 				$inventory=0;
 				$cost=0;
 			}
-
+			$barcode = $product['barcode'];
+			$code=$product['code'];
 			$date=Carbon::now()->format('d/m/Y');
-			$texto="CR|$sysconf->code|$product->barcode|$product->code|$product->description|1|$inventory|$cost|$date\n";
+			$texto="CR|$sysconf->code|$barcode|$code|$product->description|1|$inventory|$cost|$date\n";
 			fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
 
 		}
