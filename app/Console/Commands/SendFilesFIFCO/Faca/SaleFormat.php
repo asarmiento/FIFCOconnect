@@ -84,17 +84,17 @@ class SaleFormat extends Command
 			}else{
 				$zone = "";
 			}
-			$codeCustomer=$customer->code;
+			$codeCustomer=trim($customer->code);
 			$idCustomer=$customer->id;
 
 			foreach ($invoice->productByInvoice AS $productBy) {
 				$date = Carbon::parse($invoice->date)->format('d/m/Y');
 				$datePresale = Carbon::parse($invoice->date_presale)->format('d/m/Y');
 				$product=$productBy->product;
-				$barcode = $product['barcode'];
-				$code=$product['code'];
-				$description=$product['description'];
-				$units_per_box=$product['units_per_box'];
+				$barcode = trim($product['barcode']);
+				$code=trim($product['code']);
+				$description=trim($product['description']);
+				$units_per_box=trim($product['units_per_box']);
 
 				$texto="CR|$sysconf->code|$idCustomer|$codeCustomer|$customer->company_name|$customer->address|$customer->phone|||$barcode|$code|$description|$productBy->delivered|$productBy->subtotal|$productBy->m_total|$units_per_box|$datePresale|$date|$codeProvince|$codeCanton|$codeDistrict|$chanel|$zone||$invoice->numeration|$type|AV\n";
 				fwrite($fh,$texto) or die("No se pudo escribir en el archivo");

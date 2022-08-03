@@ -47,7 +47,7 @@ class ProductsFormat extends Command
 		$sysconf=Sysconf::first();
 		foreach ($products AS $product) {
 			if ($product->inventory) {
-				$inventory=$product->inventory->amount;
+				$inventory=($product->inventory->amount);
 				$cost=round($product->inventory->amount * $product->cost);
 			} else {
 				Inventory::create([
@@ -59,8 +59,8 @@ class ProductsFormat extends Command
 				$inventory=0;
 				$cost=0;
 			}
-			$barcode = $product['barcode'];
-			$code=$product['code'];
+			$barcode = trim($product['barcode']);
+			$code=trim($product['code']);
 			$date=Carbon::now()->format('d/m/Y');
 			$texto="CR|$sysconf->code|$barcode|$code|$product->description|1|$inventory|$cost|$date\n";
 			fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
