@@ -55,8 +55,8 @@ class CameraFormat extends Command
 	    fclose($fh);
 	    $local = Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."camerasFormat.txt");
 
-	    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
-	    //Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras02082022.txt",fopen($local,'r+'));
+	   // Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
+	    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras09082022.txt",fopen($local,'r+'));
 
     }
 }
