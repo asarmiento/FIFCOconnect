@@ -24,7 +24,7 @@ class Brand extends Entity
 
     protected $hidden = array('created_at','updated_at');
 
-
+	protected $connection = 'mysql_fifco';
   public static function getInsert($data)
   {
    return self::create($data);

@@ -13,6 +13,7 @@
 	{
 		use DataViewerTraits;
 
+		protected $connection ='mysql_fifco';
 		protected $table = 'credit_notes';
 		protected $fillable = [
 			'code', 'exoneration', 'status_email', 'customer_id', 'invoice_id', 'total_serv_tax',

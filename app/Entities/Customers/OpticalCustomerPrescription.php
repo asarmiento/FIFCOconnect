@@ -8,6 +8,7 @@ use App\Entities\Entity;
 
 class OpticalCustomerPrescription extends Entity
 {
+	protected $connection = 'mysql_fifco';
  protected $table ='optical_customer_prescriptions';
  protected $fillable =['customer_id', 'invoice_id', 'date', 'lensometry', 'refraction', 'observation', 'dp', 'height'];
 

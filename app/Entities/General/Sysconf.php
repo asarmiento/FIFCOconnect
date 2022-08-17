@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class Sysconf extends Entity
 {
+
     protected $fillable = array(
         'id','type_account',
         'identification', 'fe', 'data_base', 'type_price_products', 'type_of_cedula', 'id_number_atv', 'name','type_account',
@@ -36,7 +37,7 @@ class Sysconf extends Entity
         'type', 'florida','automatic_inventory'
     );
 
-    protected  $connection = 'mysql';
+	protected $connection = 'mysql_fifco';
 
   public static function getInsert($data)
   {

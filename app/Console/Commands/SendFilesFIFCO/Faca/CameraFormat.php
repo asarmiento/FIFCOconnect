@@ -3,6 +3,7 @@
 namespace App\Console\Commands\SendFilesFIFCO\Faca;
 
 use App\Entities\General\Sysconf;
+use App\Models\Sysconf AS localSysconf;
 use App\Entities\Customers\CustomerEquipment;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -42,21 +43,26 @@ class CameraFormat extends Command
     public function handle()
     {
 	    //	Excel::download();
-	    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."camerasFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
-	    $customers=CustomerEquipment::all();
-	    $sysconf=Sysconf::first();
-	    foreach ($customers AS $customer) {
-		    $code = $customer->customer->code;
-		    $texto="CR|$sysconf->code|$customer->placa|$code|$customer->placa\n";
-		    fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
 
+	    $localSysconfs = localSysconf::get();
+	    foreach ($localSysconfs AS $localSysconf) {
+		    connectDBCustomer($localSysconf);
+		    connectionDataBase();
+		    $sysconf = Sysconf::first();
+		    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."camerasFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
+		    $customers=CustomerEquipment::all();
+		    foreach ($customers AS $customer) {
+			    $code=$customer->customer->code;
+			    $texto="CR|$sysconf->code|$customer->placa|$code|$customer->placa\n";
+			    fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
+
+		    }
+
+		    fclose($fh);
+		    $local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."camerasFormat.txt");
+
+		    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
+		    //Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras02082022.txt",fopen($local,'r+'));
 	    }
-
-	    fclose($fh);
-	    $local = Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."camerasFormat.txt");
-
-	    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
-	    //Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras02082022.txt",fopen($local,'r+'));
-
     }
 }

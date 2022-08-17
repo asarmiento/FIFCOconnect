@@ -15,6 +15,6 @@
 	{
 		protected $table = "channels";
 		protected $fillable = ["name"];
-
+		protected $connection = 'mysql_fifco';
 
 	}

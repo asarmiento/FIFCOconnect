@@ -5,6 +5,7 @@ namespace App\Console\Commands\SendFilesFIFCO\Faca;
 use App\Entities\Customers\Customer;
 use App\Entities\Customers\CustomerEquipment;
 use App\Entities\General\Sysconf;
+use App\Models\Sysconf as localSysconf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
@@ -42,6 +43,10 @@ class CustomerFormat extends Command
      */
     public function handle()
     {
+	    $localSysconfs = localSysconf::get();
+	    foreach ($localSysconfs AS $localSysconf) {
+		    connectDBCustomer($localSysconf);
+		    connectionDataBase();
 	    //	Excel::download();
 	    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."customersFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 	    $customers=Customer::all();
@@ -92,5 +97,6 @@ class CustomerFormat extends Command
 	    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."clientes".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
 	    //Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."clientes02082022.txt",fopen($local,'r+'));
 
+    }
     }
 }

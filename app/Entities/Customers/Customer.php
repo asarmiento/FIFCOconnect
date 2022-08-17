@@ -17,7 +17,7 @@
 
   class Customer extends Entity
   {
-
+	  protected $connection = 'mysql_fifco';
     protected $fillable = [
       'code',
       'card',

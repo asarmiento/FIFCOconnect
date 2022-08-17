@@ -14,7 +14,7 @@
 	class Neighborhood extends Entity
 	{
 		protected $table = 'neighborhoods';
-
+		protected $connection = 'mysql_fifco';
 		protected $fillable = ['code_province', 'name_province', 'code_canton', 'name_canton', 'code_district', 'name_district', 'code', 'name'];
 
 		public static function listsLabel()

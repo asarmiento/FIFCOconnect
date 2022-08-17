@@ -12,8 +12,8 @@ class Zone extends Entity
 
   protected $guarded = ['id'];
 
-  protected $connection = 'mysql';
 
+	protected $connection = 'mysql_fifco';
   protected $hidden = ['created_at', 'updated_at'];
 
   public function customer()

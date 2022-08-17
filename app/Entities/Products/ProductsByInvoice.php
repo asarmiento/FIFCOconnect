@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Log;
 class ProductsByInvoice extends Entity
 {
   protected $table = "products_by_invoices";
-
+	protected $connection = 'mysql_fifco';
   protected $fillable = [
     'type_activity_id',
     'product_id',

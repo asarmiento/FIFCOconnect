@@ -17,6 +17,7 @@ class CustomerEquipment extends Entity
 
 		protected $fillable = ["customer_id", "placa", "doors", "models"];
 
+		protected $connection ='mysql_fifco';
 	public function customer()
 	{
 		return $this->belongsTo(Customer::class,'customer_id','id');

@@ -5,15 +5,16 @@
 	 * Date: 30/7/2018
 	 * Time: 08:01:PM
 	 */
-	
+
 	namespace App\Entities\Customers;
-	
-	
+
+
 	use App\Entities\Entity;
-	
+
 	class InvoicesByReceipt extends Entity
 	{
+		protected $connection = 'mysql_fifco';
 		protected $table = "invoices_by_receipts";
-		
+
 		protected $fillable = ['receipt_id','invoice_id','payment'];
 	}

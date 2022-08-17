@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 
 class Receipt extends Entity
 {
+	protected $connection = 'mysql_fifco';
   public $table ='receipts';
     public $errors;
 

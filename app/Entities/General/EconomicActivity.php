@@ -9,7 +9,7 @@
   class EconomicActivity extends Entity
   {
 
-
+	  protected $connection = 'mysql_fifco';
 		public static function consultCode($code)
 		{
 			return self::where('code',$code)->first();

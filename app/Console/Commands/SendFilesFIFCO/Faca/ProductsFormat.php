@@ -5,6 +5,7 @@ namespace App\Console\Commands\SendFilesFIFCO\Faca;
 use App\Entities\General\Sysconf;
 use App\Entities\Products\Inventory;
 use App\Entities\Products\Product;
+use App\Models\Sysconf as localSysconf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
@@ -42,6 +43,10 @@ class ProductsFormat extends Command
 	 */
 	public function handle()
 	{
+		$localSysconfs = localSysconf::get();
+		foreach ($localSysconfs AS $localSysconf) {
+			connectDBCustomer($localSysconf);
+			connectionDataBase();
 		$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."productsFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 		$products=Product::where('status','Activo')->get();
 		$sysconf=Sysconf::first();
@@ -74,5 +79,6 @@ class ProductsFormat extends Command
 		  Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."inventario".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
 		//Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."inventario02082022.txt",fopen($local,'r+'));
 
+	}
 	}
 }

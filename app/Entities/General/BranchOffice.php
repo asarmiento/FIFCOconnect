@@ -22,7 +22,7 @@ class BranchOffice extends Entity
     protected $fillable = ['name','sysconf_id'];
 
     protected $guarded = array('id');
-
+	protected $connection = 'mysql_fifco';
   public static function getInsert($data)
   {
     self::create($data);

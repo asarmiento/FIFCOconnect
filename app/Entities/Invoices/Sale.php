@@ -14,6 +14,7 @@ use App\Entities\Entity;
 
 class Sale extends Entity
 {
+	protected $connection = 'mysql_fifco';
     protected $fillable = array(
         'invoice_id',
         'customer_id',
@@ -25,7 +26,7 @@ class Sale extends Entity
     );
   public $incrementing = true;
     protected $guarded = array('id');
-	
+
 	/**
 	 * -----------------------------------------------------------------------
 	 * @Author     : Anwar Sarmiento <asarmiento@sistemasamigableslatam.com>
@@ -51,7 +52,7 @@ class Sale extends Entity
     {
         return $this->belongsTo(Invoice::class)->where('ind_estado','aceptado');
     }
-	
+
 	/**
 	 * -----------------------------------------------------------------------
 	 * @Author     : Anwar Sarmiento <asarmiento@sistemasamigableslatam.com>

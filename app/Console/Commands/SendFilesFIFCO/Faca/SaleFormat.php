@@ -4,6 +4,7 @@ namespace App\Console\Commands\SendFilesFIFCO\Faca;
 
 use App\Entities\General\Sysconf;
 use App\Entities\Invoices\Invoice;
+use App\Models\Sysconf as localSysconf;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -42,71 +43,76 @@ class SaleFormat extends Command
 	 */
 	public function handle()
 	{
-		set_time_limit(0);
-		ini_set('memory_limit','94G');
-		$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
-		$invoices=Invoice::where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date',Carbon::now()->toDateString())->get();
-		Log::info("ventas ".json_encode($invoices));
-		$sysconf=Sysconf::first();
-		foreach ($invoices AS $invoice) {
-			$customer=$invoice->sale->customer;
-			Log::info("ventas ".json_encode($customer));
-			$type="";
+		$localSysconfs=localSysconf::get();
+		foreach ($localSysconfs AS $localSysconf) {
+			connectDBCustomer($localSysconf);
+			connectionDataBase();
+			set_time_limit(0);
+			ini_set('memory_limit','94G');
+			$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
+			$invoices=Invoice::where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->get();
+			Log::info("ventas ".json_encode($invoices));
+			$sysconf=Sysconf::first();
+			foreach ($invoices AS $invoice) {
+				$customer=$invoice->sale->customer;
+				Log::info("ventas ".json_encode($customer));
+				$type="";
 
-			if ($invoice->type == '01' || $invoice->type == '04') {
-				$type='FA';
-			}
-			$neighborhood=$customer->neighborhood;
-			if ($neighborhood != null) {
-				$codeProvince=$neighborhood->code_province;
-				$nameProvince=$neighborhood->name_province;
-				$codeCanton=$neighborhood->code_canton;
-				$nameCanton=$neighborhood->name_canton;
-				$codeDistrict=$neighborhood->code_district;
-				$nameDistrict=$neighborhood->name_district;
-			}else{
-				$codeProvince="";
-				$nameProvince="";
-				$codeCanton="";
-				$nameCanton="";
-				$codeDistrict="";
-				$nameDistrict="";
-			}
-			$chanel=$customer->channel;
-			if($chanel!=null){
-				$chanel = $chanel->id;
-			}else{
-				$chanel="";
-			}
-			$zone=$customer->zone;
-			if($zone!=null) {
-				$zone=$zone->id;
-			}else{
-				$zone = "";
-			}
-			$codeCustomer=trim($customer->code);
-			$idCustomer=$customer->id;
+				if ($invoice->type == '01' || $invoice->type == '04') {
+					$type='FA';
+				}
+				$neighborhood=$customer->neighborhood;
+				if ($neighborhood != null) {
+					$codeProvince=$neighborhood->code_province;
+					$nameProvince=$neighborhood->name_province;
+					$codeCanton=$neighborhood->code_canton;
+					$nameCanton=$neighborhood->name_canton;
+					$codeDistrict=$neighborhood->code_district;
+					$nameDistrict=$neighborhood->name_district;
+				} else {
+					$codeProvince="";
+					$nameProvince="";
+					$codeCanton="";
+					$nameCanton="";
+					$codeDistrict="";
+					$nameDistrict="";
+				}
+				$chanel=$customer->channel;
+				if ($chanel != null) {
+					$chanel=$chanel->id;
+				} else {
+					$chanel="";
+				}
+				$zone=$customer->zone;
+				if ($zone != null) {
+					$zone=$zone->id;
+				} else {
+					$zone="";
+				}
+				$codeCustomer=trim($customer->code);
+				$idCustomer=$customer->id;
 
-			foreach ($invoice->productByInvoice AS $productBy) {
-				$date = Carbon::parse($invoice->date)->format('d/m/Y');
-				$datePresale = Carbon::parse($invoice->date_presale)->format('d/m/Y');
-				$product=$productBy->product;
-				$barcode = trim($product['barcode']);
-				$code=trim($product['code']);
-				$description=trim($product['description']);
-				$units_per_box=trim($product['units_per_box']);
+				foreach ($invoice->productByInvoice AS $productBy) {
+					$date=Carbon::parse($invoice->date)->format('d/m/Y');
+					$datePresale=Carbon::parse($invoice->date_presale)->format('d/m/Y');
+					$product=$productBy->product;
+					$barcode=trim($product['barcode']);
+					$code=trim($product['code']);
+					$description=trim($product['description']);
+					$units_per_box=trim($product['units_per_box']);
 
-				$texto="CR|$sysconf->code|$idCustomer|$codeCustomer|$customer->company_name|$customer->address|$customer->phone|||$barcode|$code|$description|$productBy->delivered|$productBy->subtotal|$productBy->m_total|$units_per_box|$datePresale|$date|$codeProvince|$codeCanton|$codeDistrict|$chanel|$zone||$invoice->numeration|$type|AV\n";
-				fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
+					$texto="CR|$sysconf->code|$idCustomer|$codeCustomer|$customer->company_name|$customer->address|$customer->phone|||$barcode|$code|$description|$productBy->delivered|$productBy->subtotal|$productBy->m_total|$units_per_box|$datePresale|$date|$codeProvince|$codeCanton|$codeDistrict|$chanel|$zone||$invoice->numeration|$type|AV\n";
+					fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
+				}
 			}
+
+			fclose($fh);
+
+			$local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt");
+
+			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
+			//Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas02082022.txt",fopen($local,'r+'));
+
 		}
-
-		fclose($fh);
-
-		$local = Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt");
-
-	Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
-	//Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas02082022.txt",fopen($local,'r+'));
-
 	}
 }

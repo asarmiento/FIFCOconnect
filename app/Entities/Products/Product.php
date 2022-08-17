@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 
 class Product extends Entity
 {
-
+	protected $connection = 'mysql_fifco';
   protected $fillable = [
     'barcode',
     'code',

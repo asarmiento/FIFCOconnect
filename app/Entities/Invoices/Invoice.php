@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Invoice extends Entity
 {
+	protected $connection = 'mysql_fifco';
     public $errors;
     protected $fillable = [
         'uuid',
