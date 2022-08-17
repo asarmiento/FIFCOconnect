@@ -45,8 +45,15 @@ class SaleFormat extends Command
 	{
 		$localSysconfs=localSysconf::get();
 		foreach ($localSysconfs AS $localSysconf) {
-			connectDBCustomer($localSysconf);
-			connectionDataBase();
+/*			connectDBCustomer($localSysconf);
+			connectionDataBase();*/
+			env('DB_DATABASE_FIFCO',$localSysconf->database) ;
+			env('DB_USERNAME_FIFCO',$localSysconf->username) ;
+			env('DB_PASSWORD_FIFCO',$localSysconf->password) ;
+			env('SFTP_HOST',$localSysconf->sftp_host) ;
+			env('SFTP_USERNAME',$localSysconf->sftp_username) ;
+			env('SFTP_PASSWORD',$localSysconf->sftp_password) ;
+			
 			set_time_limit(0);
 			ini_set('memory_limit','94G');
 			$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");

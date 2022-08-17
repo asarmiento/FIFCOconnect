@@ -20,14 +20,17 @@ function connectionDataBase()
 
 function connectDBCustomer($sysconf)
 {
+/*	Session::pull('sysconf','');
+	Session::flush('DB_HOST_FIFCO');
+	Session::flush('DB_PORT_FIFCO');
+	Session::flush('DB_DATABASE_FIFCO');
+	Session::flush('DB_USERNAME_FIFCO');
+	Session::flush('DB_PASSWORD_FIFCO');
+	Session::flush('SFTP_HOST');
+	Session::flush('SFTP_USERNAME');
+	Session::flush('SFTP_PASSWORD');*/
 
 
-	env('DB_DATABASE_FIFCO',$sysconf->database) ;
-	env('DB_USERNAME_FIFCO',$sysconf->username) ;
-	env('DB_PASSWORD_FIFCO',$sysconf->password) ;
-	env('SFTP_HOST',$sysconf->sftp_host) ;
-	env('SFTP_USERNAME',$sysconf->sftp_username) ;
-	env('SFTP_PASSWORD',$sysconf->sftp_password) ;
 	Session::put('sysconf',$sysconf);
 	Session::put('DB_HOST_FIFCO',$sysconf->host);
 	Session::put('DB_PORT_FIFCO',$sysconf->port);

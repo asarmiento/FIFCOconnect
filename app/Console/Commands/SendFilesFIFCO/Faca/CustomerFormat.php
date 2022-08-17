@@ -45,8 +45,14 @@ class CustomerFormat extends Command
     {
 	    $localSysconfs = localSysconf::get();
 	    foreach ($localSysconfs AS $localSysconf) {
-		    connectDBCustomer($localSysconf);
-		    connectionDataBase();
+		/*    connectDBCustomer($localSysconf);
+		    connectionDataBase();*/
+		    env('DB_DATABASE_FIFCO',$localSysconf->database) ;
+		    env('DB_USERNAME_FIFCO',$localSysconf->username) ;
+		    env('DB_PASSWORD_FIFCO',$localSysconf->password) ;
+		    env('SFTP_HOST',$localSysconf->sftp_host) ;
+		    env('SFTP_USERNAME',$localSysconf->sftp_username) ;
+		    env('SFTP_PASSWORD',$localSysconf->sftp_password) ;
 	    //	Excel::download();
 	    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."customersFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 	    $customers=Customer::all();
