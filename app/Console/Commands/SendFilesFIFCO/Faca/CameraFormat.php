@@ -49,6 +49,7 @@ class CameraFormat extends Command
 		    connectDBCustomer($localSysconf);
 		    connectionDataBase();
 		    $sysconf = Sysconf::first();
+		    $this->info("cliente :".json_encode($sysconf));
 		    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."camerasFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 		    $customers=CustomerEquipment::all();
 		    foreach ($customers AS $customer) {

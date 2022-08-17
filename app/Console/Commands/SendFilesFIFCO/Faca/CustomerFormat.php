@@ -51,6 +51,7 @@ class CustomerFormat extends Command
 	    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."customersFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 	    $customers=Customer::all();
 	    $sysconf=Sysconf::first();
+		    $this->info("cliente :".json_encode($sysconf));
 	    foreach ($customers AS $customer) {
 				$neighborhood = $customer->neighborhood;
 		    if ($neighborhood != null) {

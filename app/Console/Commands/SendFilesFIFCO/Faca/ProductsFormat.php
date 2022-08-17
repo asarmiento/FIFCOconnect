@@ -50,6 +50,7 @@ class ProductsFormat extends Command
 		$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."productsFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 		$products=Product::where('status','Activo')->get();
 		$sysconf=Sysconf::first();
+			$this->info("cliente :".json_encode($sysconf));
 		foreach ($products AS $product) {
 			if ($product->inventory) {
 				$inventory=($product->inventory->amount);

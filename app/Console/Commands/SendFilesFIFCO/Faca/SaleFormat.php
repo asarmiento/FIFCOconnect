@@ -53,6 +53,7 @@ class SaleFormat extends Command
 			$invoices=Invoice::where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->get();
 			Log::info("ventas ".json_encode($invoices));
 			$sysconf=Sysconf::first();
+			$this->info("cliente :".json_encode($sysconf));
 			foreach ($invoices AS $invoice) {
 				$customer=$invoice->sale->customer;
 				Log::info("ventas ".json_encode($customer));
