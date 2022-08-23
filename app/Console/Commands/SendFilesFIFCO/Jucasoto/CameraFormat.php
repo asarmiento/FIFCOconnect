@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\SendFilesFIFCO\Faca;
+namespace App\Console\Commands\SendFilesFIFCO\Jucasoto;
 
 use App\Entities\General\Sysconf;
 use App\Models\Sysconf AS localSysconf;
@@ -18,7 +18,7 @@ class CameraFormat extends Command
      *
      * @var string
      */
-    protected $signature = 'friendly:cameraFormat';
+    protected $signature = 'Jucasoto:cameraFormat';
 
     /**
      * The console command description.
@@ -46,13 +46,10 @@ class CameraFormat extends Command
     {
 	    //	Excel::download();
 
-	    $localSysconfs = DB::connection('mysql')->table('sysconfs')->where('fifco',1)->where('id',2)->get();
-	    $this->info('inicio proceso '.$localSysconfs->count().' '.json_encode($localSysconfs));
+	    $localSysconf=localSysconf::find(6);
 
-	    foreach ($localSysconfs AS $localSysconf) {
-
-		    connectDBCustomer($localSysconf);
-		    connectionDataBase();
+	    connectDBCustomer($localSysconf);
+	    connectionDataBase();
 		    env('DB_DATABASE_FIFCO',$localSysconf->database) ;
 		    env('DB_USERNAME_FIFCO',$localSysconf->username) ;
 		    env('DB_PASSWORD_FIFCO',$localSysconf->password) ;
@@ -62,8 +59,10 @@ class CameraFormat extends Command
 		    env('SFTP_PASSWORD',$localSysconf->sftp_password) ;
 		    $sysconf = DB::connection('mysql_fifco')->table('sysconfs')->first();
 		    $this->info("cliente :".json_encode($sysconf));
-		    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."camerasFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
-		    $customers=CustomerEquipment::all();
+		    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."Jucasoto".DIRECTORY_SEPARATOR."camerasFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
+		    $customers=CustomerEquipment::whereHas('customer',function ($c) use($sysconf){
+		    	$c->where('sysconf_id',$sysconf->id);
+		    })->get();
 		    foreach ($customers AS $customer) {
 			    $code=$customer->customer->code;
 			    $texto="CR|$sysconf->code|$customer->placa|$code|$customer->placa\n";
@@ -72,11 +71,11 @@ class CameraFormat extends Command
 		    }
 
 		    fclose($fh);
-		    $local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."camerasFormat.txt");
+		    $local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."Jucasoto".DIRECTORY_SEPARATOR."camerasFormat.txt");
 
 		    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
 		    //Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras02082022.txt",fopen($local,'r+'));
 
-	    }
+
     }
 }

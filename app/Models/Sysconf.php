@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sysconf extends Model
 {
-			protected $table = 'sysconfs';
-			protected $fillable = ['name', 'host', 'port', 'database', 'username', 'password', 'sftp_host', 'sftp_port', 'sftp_username', 'sftp_password', 'fifco'];
+	protected $table='sysconfs';
+	protected $fillable=['name','host','port','database','username','password','sftp_host','sftp_port','sftp_username',
+		'sftp_password','fifco'];
 
-
-    use HasFactory;
+	protected $connection='mysql';
+	use HasFactory;
 }

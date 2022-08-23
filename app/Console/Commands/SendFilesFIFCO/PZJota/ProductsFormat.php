@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\SendFilesFIFCO\Faca;
+namespace App\Console\Commands\SendFilesFIFCO\PZJota;
 
 use App\Entities\General\Sysconf;
 use App\Entities\Products\Inventory;
@@ -17,7 +17,7 @@ class ProductsFormat extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature='friendly:productFormat';
+	protected $signature='PZJota:productFormat';
 
 	/**
 	 * The console command description.
@@ -43,19 +43,20 @@ class ProductsFormat extends Command
 	 */
 	public function handle()
 	{
-		$localSysconfs = localSysconf::where('fifco',1)->get();
-		foreach ($localSysconfs AS $localSysconf) {
-/*			connectDBCustomer($localSysconf);
-			connectionDataBase();*/
+		$localSysconf=localSysconf::find(7);
+
+		connectDBCustomer($localSysconf);
+		connectionDataBase();
 			env('DB_DATABASE_FIFCO',$localSysconf->database) ;
 			env('DB_USERNAME_FIFCO',$localSysconf->username) ;
 			env('DB_PASSWORD_FIFCO',$localSysconf->password) ;
 			env('SFTP_HOST',$localSysconf->sftp_host) ;
 			env('SFTP_USERNAME',$localSysconf->sftp_username) ;
 			env('SFTP_PASSWORD',$localSysconf->sftp_password) ;
-		$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."productsFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
-		$products=Product::where('status','Activo')->get();
+		$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."PZJota".DIRECTORY_SEPARATOR."productsFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
+
 		$sysconf=Sysconf::first();
+		$products=Product::where('status','Activo')->where('sysconf_id',$sysconf->id)->get();
 			$this->info("cliente :".json_encode($sysconf));
 		foreach ($products AS $product) {
 			if ($product->inventory) {
@@ -81,11 +82,11 @@ class ProductsFormat extends Command
 
 		fclose($fh);
 
-		$local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."productsFormat.txt");
+		$local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."PZJota".DIRECTORY_SEPARATOR."productsFormat.txt");
 
 		  Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."inventario".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
 		//Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."inventario02082022.txt",fopen($local,'r+'));
 
-	}
+
 	}
 }

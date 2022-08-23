@@ -20,15 +20,7 @@ function connectionDataBase()
 
 function connectDBCustomer($sysconf)
 {
-/*	Session::pull('sysconf','');
-	Session::flush('DB_HOST_FIFCO');
-	Session::flush('DB_PORT_FIFCO');
-	Session::flush('DB_DATABASE_FIFCO');
-	Session::flush('DB_USERNAME_FIFCO');
-	Session::flush('DB_PASSWORD_FIFCO');
-	Session::flush('SFTP_HOST');
-	Session::flush('SFTP_USERNAME');
-	Session::flush('SFTP_PASSWORD');*/
+/*	*/
 
 
 	Session::put('sysconf',$sysconf);

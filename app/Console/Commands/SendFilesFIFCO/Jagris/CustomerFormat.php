@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\SendFilesFIFCO\Faca;
+namespace App\Console\Commands\SendFilesFIFCO\Jagris;
 
 use App\Entities\Customers\Customer;
 use App\Entities\Customers\CustomerEquipment;
@@ -17,7 +17,7 @@ class CustomerFormat extends Command
      *
      * @var string
      */
-    protected $signature = 'friendly:CustomerFormat';
+    protected $signature = 'jagris:CustomerFormat';
 
     /**
      * The console command description.
@@ -43,10 +43,10 @@ class CustomerFormat extends Command
      */
     public function handle()
     {
-	    $localSysconfs = localSysconf::where('fifco',1)->get();
-	    foreach ($localSysconfs AS $localSysconf) {
-		/*    connectDBCustomer($localSysconf);
-		    connectionDataBase();*/
+	    $localSysconf=localSysconf::find(2);
+
+	    connectDBCustomer($localSysconf);
+	    connectionDataBase();
 		    env('DB_DATABASE_FIFCO',$localSysconf->database) ;
 		    env('DB_USERNAME_FIFCO',$localSysconf->username) ;
 		    env('DB_PASSWORD_FIFCO',$localSysconf->password) ;
@@ -54,9 +54,10 @@ class CustomerFormat extends Command
 		    env('SFTP_USERNAME',$localSysconf->sftp_username) ;
 		    env('SFTP_PASSWORD',$localSysconf->sftp_password) ;
 	    //	Excel::download();
-	    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."customersFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
-	    $customers=Customer::all();
+	    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."Jagris".DIRECTORY_SEPARATOR."customersFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
+
 	    $sysconf=Sysconf::first();
+	    $customers=Customer::where('sysconf_id',$sysconf->id)->get();
 		    $this->info("cliente :".json_encode($sysconf));
 	    foreach ($customers AS $customer) {
 				$neighborhood = $customer->neighborhood;
@@ -99,11 +100,11 @@ class CustomerFormat extends Command
 	    ;
 	    fclose($fh);
 
-	    $local = Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."customersFormat.txt");
+	    $local = Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."Jagris".DIRECTORY_SEPARATOR."customersFormat.txt");
 
 	    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."clientes".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
 	    //Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."clientes02082022.txt",fopen($local,'r+'));
 
-    }
+
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands\SendFilesFIFCO\Faca;
+namespace App\Console\Commands\SendFilesFIFCO\Elimurgue;
 
 use App\Entities\General\Sysconf;
 use App\Entities\Invoices\Invoice;
@@ -17,7 +17,7 @@ class SaleFormat extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature='friendly:saleFormat';
+	protected $signature='Elimurgue:saleFormat';
 
 	/**
 	 * The console command description.
@@ -43,10 +43,10 @@ class SaleFormat extends Command
 	 */
 	public function handle()
 	{
-		$localSysconfs=localSysconf::where('id',1)->get();
-		foreach ($localSysconfs AS $localSysconf) {
-/*			connectDBCustomer($localSysconf);
-			connectionDataBase();*/
+		$localSysconf=localSysconf::find(5);
+
+		connectDBCustomer($localSysconf);
+			connectionDataBase();
 			env('DB_DATABASE_FIFCO',$localSysconf->database) ;
 			env('DB_USERNAME_FIFCO',$localSysconf->username) ;
 			env('DB_PASSWORD_FIFCO',$localSysconf->password) ;
@@ -57,11 +57,11 @@ class SaleFormat extends Command
 
 			set_time_limit(0);
 			ini_set('memory_limit','94G');
-			$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
-
-			$sysconf=Sysconf::first();
+			$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."Elimurgue".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
+		$sysconf=Sysconf::first();
 			$invoices=Invoice::where('sysconf_id',$sysconf->id)->where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->get();
 			Log::info("ventas ".json_encode($invoices));
+
 			$this->info("cliente :".json_encode($sysconf));
 			foreach ($invoices AS $invoice) {
 				$customer=$invoice->sale->customer;
@@ -118,13 +118,13 @@ class SaleFormat extends Command
 
 			fclose($fh);
 
-			$local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt");
+			$local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."Elimurgue".DIRECTORY_SEPARATOR."salesFormat.txt");
 
-			if(Carbon::now()->toDateString() =='2022-08-21'){
-				Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas21082022.txt",fopen($local,'r+'));
-			}else{
-				Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
-			}
+		if(Carbon::now()->toDateString() =='2022-08-21'){
+			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas21082022.txt",fopen($local,'r+'));
+		}else{
+			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
 		}
+
 	}
 }
