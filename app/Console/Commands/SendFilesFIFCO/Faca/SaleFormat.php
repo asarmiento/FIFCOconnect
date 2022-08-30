@@ -104,11 +104,16 @@ class SaleFormat extends Command
 
 			foreach ($invoice->productByInvoice AS $productBy) {
 				$date=Carbon::parse($invoice->date)->format('d/m/Y');
-				$datePresale=Carbon::parse($invoice->date_presale)->format('d/m/Y');
+				$dt = Carbon::createFromFormat('Y-m-d', $invoice->date_presale);
+				if ($dt !== false) {
+					$datePresale=Carbon::parse($invoice->date_presale)->format('d/m/Y');
+				}else{
+					$datePresale=Carbon::parse($invoice->date)->format('d/m/Y');
+				}
 				$product=$productBy->product;
 				$barcode=trim($product['barcode']);
 				$code=trim($product['code']);
-				$description=trim($product['description']);
+				$description=trim(substr($product['description'],0,99));
 				$units_per_box=trim($product['units_per_box']);
 
 				$texto="CR|$sysconf->code|$idCustomer|$codeCustomer|$customer->company_name|$customer->address|$customer->phone|||$barcode|$code|$description|$productBy->delivered|$productBy->subtotal|$productBy->m_total|$units_per_box|$datePresale|$date|$codeProvince|$codeCanton|$codeDistrict|$chanel|$zone||$invoice->numeration|$type|AV\n";
