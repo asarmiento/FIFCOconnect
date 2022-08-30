@@ -59,12 +59,12 @@ class SaleFormat extends Command
 			ini_set('memory_limit','94G');
 			$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."Jagris".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 			$invoices=Invoice::where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->get();
-			Log::info("ventas ".json_encode($invoices));
+		//	Log::info("ventas ".json_encode($invoices));
 			$sysconf=Sysconf::first();
 			$this->info("cliente :".json_encode($sysconf));
 			foreach ($invoices AS $invoice) {
 				$customer=$invoice->sale->customer;
-				Log::info("ventas ".json_encode($customer));
+			//	Log::info("ventas ".json_encode($customer));
 				$type="";
 
 				if ($invoice->type == '01' || $invoice->type == '04') {

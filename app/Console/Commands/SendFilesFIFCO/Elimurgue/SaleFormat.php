@@ -60,12 +60,12 @@ class SaleFormat extends Command
 			$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."Elimurgue".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 		$sysconf=Sysconf::first();
 			$invoices=Invoice::where('sysconf_id',$sysconf->id)->where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->get();
-			Log::info("ventas ".json_encode($invoices));
+		//	Log::info("ventas ".json_encode($invoices));
 
 			$this->info("cliente :".json_encode($sysconf));
 			foreach ($invoices AS $invoice) {
 				$customer=$invoice->sale->customer;
-				Log::info("ventas ".json_encode($customer));
+		//		Log::info("ventas ".json_encode($customer));
 				$type="";
 
 				if ($invoice->type == '01' || $invoice->type == '04') {
