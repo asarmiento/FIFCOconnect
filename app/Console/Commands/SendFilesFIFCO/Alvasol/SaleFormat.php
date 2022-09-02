@@ -59,7 +59,11 @@ class SaleFormat extends Command
 			ini_set('memory_limit','94G');
 			$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."Alvasol".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 		$sysconf=Sysconf::first();
-		$invoices=Invoice::where('sysconf_id',$sysconf->id)->where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->get();
+		if(Carbon::now()->toDateString() =='2022-09-01') {
+			$invoices=Invoice::where('sysconf_id',$sysconf->id)->where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=','2021-01-01')->get();
+		}else{
+			$invoices=Invoice::where('sysconf_id',$sysconf->id)->where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->get();
+		}
 		//	Log::info("ventas ".json_encode($invoices));
 			$this->info("cliente :".json_encode($sysconf));
 			foreach ($invoices AS $invoice) {
@@ -103,10 +107,10 @@ class SaleFormat extends Command
 
 				foreach ($invoice->productByInvoice AS $productBy) {
 					$date=Carbon::parse($invoice->date)->format('d/m/Y');
-					$dt = Carbon::createFromFormat('Y-m-d', $invoice->date_presale);
-					if ($dt !== false) {
-						$datePresale=Carbon::parse($invoice->date_presale)->format('d/m/Y');
-					}else{
+					$datePresale=Carbon::parse($invoice->date_presale)->format('d/m/Y');
+					$explo=explode('/',$datePresale);
+					$dt=checkdate($explo[1],$explo[0],$explo[2]);
+					if (!$dt) {
 						$datePresale=Carbon::parse($invoice->date)->format('d/m/Y');
 					}
 					$product=$productBy->product;
@@ -124,8 +128,8 @@ class SaleFormat extends Command
 
 			$local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."Alvasol".DIRECTORY_SEPARATOR."salesFormat.txt");
 
-		if(Carbon::now()->toDateString() =='2022-08-21'){
-			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas21082022.txt",fopen($local,'r+'));
+		if(Carbon::now()->toDateString() =='2022-09-01'){
+			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventasHistorial.txt",fopen($local,'r+'));
 		}else{
 			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
 		}
