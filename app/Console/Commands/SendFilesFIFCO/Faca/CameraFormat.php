@@ -18,7 +18,7 @@ class CameraFormat extends Command
      *
      * @var string
      */
-    protected $signature = 'friendly:cameraFormat';
+    protected $signature = 'faca:cameraFormat';
 
     /**
      * The console command description.
@@ -46,20 +46,18 @@ class CameraFormat extends Command
     {
 	    //	Excel::download();
 
-	    $localSysconfs = DB::connection('mysql')->table('sysconfs')->where('fifco',1)->where('id',2)->get();
-	    $this->info('inicio proceso '.$localSysconfs->count().' '.json_encode($localSysconfs));
+	    $localSysconf=localSysconf::where('id',1)->first();
 
-	    foreach ($localSysconfs AS $localSysconf) {
+	    connectDBCustomer($localSysconf);
+	    connectionDataBase();
+	    env('DB_DATABASE_FIFCO',$localSysconf->database);
+	    env('DB_USERNAME_FIFCO',$localSysconf->username);
+	    env('DB_PASSWORD_FIFCO',$localSysconf->password);
 
-		    connectDBCustomer($localSysconf);
-		    connectionDataBase();
-		    env('DB_DATABASE_FIFCO',$localSysconf->database) ;
-		    env('DB_USERNAME_FIFCO',$localSysconf->username) ;
-		    env('DB_PASSWORD_FIFCO',$localSysconf->password) ;
+	    env('SFTP_HOST',$localSysconf->sftp_host);
+	    env('SFTP_USERNAME',$localSysconf->sftp_username);
+	    env('SFTP_PASSWORD',$localSysconf->sftp_password);
 
-		    env('SFTP_HOST',$localSysconf->sftp_host) ;
-		    env('SFTP_USERNAME',$localSysconf->sftp_username) ;
-		    env('SFTP_PASSWORD',$localSysconf->sftp_password) ;
 		    $sysconf = DB::connection('mysql_fifco')->table('sysconfs')->first();
 		    $this->info("cliente :".json_encode($sysconf));
 		    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."camerasFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
@@ -77,6 +75,6 @@ class CameraFormat extends Command
 		    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
 		    //Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."camaras02082022.txt",fopen($local,'r+'));
 
-	    }
+
     }
 }

@@ -17,7 +17,7 @@ class SaleFormat extends Command
 	 *
 	 * @var string
 	 */
-	protected $signature='friendly:saleFormat';
+	protected $signature='faca:saleFormat';
 
 	/**
 	 * The console command description.
