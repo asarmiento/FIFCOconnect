@@ -76,13 +76,13 @@ class Kernel extends ConsoleKernel
 	    $schedule->command('Elimurgue:saleFormat')
 		    ->everyMinute();
 
-	    $schedule->command('friendly:CustomerFormat')
+	    $schedule->command('faca:CustomerFormat')
 		    ->everyMinute();
-	    $schedule->command('friendly:cameraFormat')
+	    $schedule->command('faca:cameraFormat')
 		    ->everyMinute();
-	    $schedule->command('friendly:productFormat')
+	    $schedule->command('faca:productFormat')
 		    ->everyMinute();
-	    $schedule->command('friendly:saleFormat')
+	    $schedule->command('faca:saleFormat')
 		    ->everyMinute();
 
 	    $schedule->command('Virginia:CustomerFormat')

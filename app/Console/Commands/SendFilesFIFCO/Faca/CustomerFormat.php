@@ -105,6 +105,6 @@ class CustomerFormat extends Command
 	    Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."clientes".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
 	    //Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."clientes02082022.txt",fopen($local,'r+'));
 
-    
+
     }
 }
