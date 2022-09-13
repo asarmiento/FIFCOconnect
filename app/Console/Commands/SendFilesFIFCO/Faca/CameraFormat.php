@@ -64,7 +64,8 @@ class CameraFormat extends Command
 		    $customers=CustomerEquipment::all();
 		    foreach ($customers AS $customer) {
 			    $code=$customer->customer->code;
-			    $texto="CR|$sysconf->code|$customer->placa|$code|$customer->placa\n";
+			    $placa=$customer->placa;
+			    $texto="CR|$sysconf->code|$customer->placa|$code|$placa\n";
 			    fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
 
 		    }
