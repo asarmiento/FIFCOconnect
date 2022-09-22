@@ -62,12 +62,12 @@ class SaleFormat extends Command
 		$sysconf=Sysconf::first();
 		if(Carbon::now()->toDateString() =='2022-09-22') {
 			$productByInvoices=ProductsByInvoice::whereHas('invoice',function ($i) use($sysconf) {
-				$i->whereBetween('date','>=','2021-01-01')->where('invoice_type_id',2)->where('sysconf_id',$sysconf->id)->where('ind_estado','aceptado');
+				$i->where('date','>=','2021-01-01')->where('invoice_type_id',2)->where('sysconf_id',$sysconf->id)->where('ind_estado','aceptado');
 			})->where('delivered','>',0)->get();
 			//	$invoices=Invoice::where('sysconf_id',$sysconf->id)->where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=','2021-01-01')->get();
 		}else{
 			$productByInvoices=ProductsByInvoice::whereHas('invoice',function ($i) use($sysconf) {
-				$i->whereBetween('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->where('invoice_type_id',2)->where('sysconf_id',$sysconf->id)->where('ind_estado','aceptado');
+				$i->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->where('invoice_type_id',2)->where('sysconf_id',$sysconf->id)->where('ind_estado','aceptado');
 			})->where('delivered','>',0)->get();
 			//	$invoices=Invoice::where('sysconf_id',$sysconf->id)->where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->get();
 		}
