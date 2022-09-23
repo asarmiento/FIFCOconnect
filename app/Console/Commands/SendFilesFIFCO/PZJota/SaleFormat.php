@@ -137,7 +137,7 @@ class SaleFormat extends Command
 		if(Carbon::now()->toDateString() =='2022-09-22'){
 			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventasHistorial.txt",fopen($local,'r+'));
 		}else{
-			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
+		//	Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
 		}
 
 	}

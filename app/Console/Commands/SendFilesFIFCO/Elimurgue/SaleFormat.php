@@ -67,18 +67,20 @@ class SaleFormat extends Command
 			//	$invoices=Invoice::where('sysconf_id',$sysconf->id)->where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=','2021-01-01')->get();
 		}else{
 			$productByInvoices=ProductsByInvoice::whereHas('invoice',function ($i) use($sysconf) {
-				$i->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->where('invoice_type_id',2)->where('sysconf_id',$sysconf->id)->where('ind_estado','aceptado');
+				$i->whereBetween('date',["2021-01-01","2021-01-31"])->where('invoice_type_id',2)->where('sysconf_id',$sysconf->id)->where('ind_estado','aceptado');
 			})->where('delivered','>',0)->get();
 			//	$invoices=Invoice::where('sysconf_id',$sysconf->id)->where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=',Carbon::now()->subMonth(1)->firstOfMonth()->toDateString())->get();
 		}
 		//		Log::info("ventas ".json_encode($invoices));
 		$this->info("cliente :".json_encode($sysconf));
 		foreach ($productByInvoices AS $productByInvoice) {
-			$customer=$productByInvoice->invoice->sale->customer;
+
+			$invoice = $productByInvoice->invoice;
+			$customer=$invoice->sale->customer;
 			//	Log::info("ventas ".json_encode($customer));
 			$type="";
 
-			if ($productByInvoice->invoice->type == '01' || $productByInvoice->invoice->type == '04') {
+			if ($invoice->type == '01' || $invoice->type == '04') {
 				$type='FA';
 			}
 			$neighborhood=$customer->neighborhood;
@@ -113,12 +115,12 @@ class SaleFormat extends Command
 			$idCustomer=$customer->id;
 
 			$productBy =$productByInvoice;
-			$date=Carbon::parse($productByInvoice->invoice->date)->format('d/m/Y');
-			$datePresale=Carbon::parse($productByInvoice->invoice->date_presale)->format('d/m/Y');
+			$date=Carbon::parse($invoice->date)->format('d/m/Y');
+			$datePresale=Carbon::parse($invoice->date_presale)->format('d/m/Y');
 			$explo=explode('/',$datePresale);
 			$dt=checkdate($explo[1],$explo[0],$explo[2]);
 			if (!$dt) {
-				$datePresale=Carbon::parse($productByInvoice->invoice->date)->format('d/m/Y');
+				$datePresale=Carbon::parse($invoice->date)->format('d/m/Y');
 			}
 			$product=$productBy->product;
 			$barcode=trim($product['barcode']);
@@ -126,7 +128,7 @@ class SaleFormat extends Command
 			$description=trim(substr($product['description'],0,99));
 			$units_per_box=trim($product['units_per_box']);
 
-			$texto="CR|$sysconf->code|$idCustomer|$codeCustomer|$customer->company_name|$customer->address|$customer->phone|||$barcode|$code|$description|$productBy->delivered|$productBy->subtotal|$productBy->m_total|$units_per_box|$datePresale|$date|$codeProvince|$codeCanton|$codeDistrict|$chanel|$zone||$productByInvoice->invoice->numeration|$type|AV\n";
+			$texto="CR|$sysconf->code|$idCustomer|$codeCustomer|$customer->company_name|$customer->address|$customer->phone|||$barcode|$code|$description|$productBy->delivered|$productBy->subtotal|$productBy->m_total|$units_per_box|$datePresale|$date|$codeProvince|$codeCanton|$codeDistrict|$chanel|$zone||$invoice->numeration|$type|AV\n";
 			fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
 
 		}
