@@ -36,3 +36,26 @@ function connectDBCustomer($sysconf)
 
 
 }
+
+function historyMonths($start, $end)
+{
+	$range = array();
+	$years = array();
+
+	if (is_string($start) === true) $start = strtotime($start);
+	if (is_string($end) === true) $end = strtotime($end);
+
+	if ($start > $end) return createDateRangeArray($end, $start);
+
+	do {
+		$range[] = date('Y-m-d', $start);
+		$start = strtotime("+ 1 day", $start);
+	} while ($start <= $end);
+	foreach ($range AS $year):
+		$data=new Carbon($year);
+		array_push($years,
+			$data->format('Y-m'));
+	endforeach;
+	$years=array_unique($years);
+	return $years;
+}
