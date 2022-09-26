@@ -61,7 +61,7 @@ class SaleFormat extends Command
 		$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 
 		$sysconf=Sysconf::first();
-		if (Carbon::now()->toDateString() == '2022-09-23') {
+		if (Carbon::now()->toDateString() == '2022-09-26') {
 			$dates=historyMonths(Carbon::parse('2021-01-01')->toDateString(),Carbon::now()->toDateString());
 		} else {
 			$dates=historyMonths(Carbon::now()->subMonth(1)->firstOfMonth()->toDateString(),Carbon::now()->toDateString());
@@ -152,7 +152,7 @@ class SaleFormat extends Command
 
 		$local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."salesFormat.txt");
 
-		if(Carbon::now()->toDateString() =='2022-09-23'){
+		if(Carbon::now()->toDateString() =='2022-09-26'){
 			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventasHistorial.txt",fopen($local,'r+'));
 		}else {
 			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
