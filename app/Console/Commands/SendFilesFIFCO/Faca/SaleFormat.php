@@ -77,7 +77,7 @@ class SaleFormat extends Command
 			$productByInvoices=ProductsByInvoice::whereHas('invoice',function ($i) use ($sysconf,$datei,$datef) {
 				$i->whereBetween('date',[$datei->firstOfMonth()->toDateString(),
 					$datef->endOfMonth()->toDateString()])->where('invoice_type_id',2)->where('sysconf_id',$sysconf->id)->where('ind_estado','aceptado');
-			})->whereHas('producto',function ($p){
+			})->whereHas('product',function ($p){
                 $p->where('florida',true);
             })->where('delivered','>',0)->get();
 			//	$invoices=Invoice::where('sysconf_id',$sysconf->id)->where('invoice_type_id',2)->where('ind_estado','aceptado')->where('date','>=','2021-01-01')->get();
