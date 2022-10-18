@@ -60,7 +60,7 @@ class SaleFormat extends Command
 			ini_set('memory_limit','94G');
 			$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."Alvasol".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 		$sysconf=Sysconf::first();
-		if (Carbon::now()->toDateString() == '2022-09-26') {
+		if (Carbon::now()->toDateString() == '2022-10-18') {
 			$dates=historyMonths(Carbon::parse('2021-01-01')->toDateString(),Carbon::now()->toDateString());
 		} else {
 			$dates=historyMonths(Carbon::now()->subMonth(1)->firstOfMonth()->toDateString(),Carbon::now()->toDateString());
@@ -131,7 +131,7 @@ class SaleFormat extends Command
 
 				$productBy=$productByInvoice;
 				$date=Carbon::parse($invoice->date)->format('d/m/Y');
-				$datePresale=Carbon::parse($invoice->date_presale)->format('d/m/Y');
+				$datePresale=Carbon::parse($invoice->date)->format('d/m/Y');
 				$explo=explode('/',$datePresale);
 				$dt=checkdate($explo[1],$explo[0],$explo[2]);
 				if (!$dt) {
@@ -152,7 +152,7 @@ class SaleFormat extends Command
 
 			$local=Storage::disk('local')->path("FIFCO".DIRECTORY_SEPARATOR."Alvasol".DIRECTORY_SEPARATOR."salesFormat.txt");
 
-		if(Carbon::now()->toDateString() =='2022-09-26'){
+		if(Carbon::now()->toDateString() =='2022-10-18'){
 			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventasHistorial.txt",fopen($local,'r+'));
 		}else{
 			Storage::disk('sftp')->put(DIRECTORY_SEPARATOR."ventas".Carbon::now()->format('dmY').".txt",fopen($local,'r+'));
