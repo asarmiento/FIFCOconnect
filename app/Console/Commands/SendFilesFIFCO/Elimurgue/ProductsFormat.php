@@ -61,7 +61,7 @@ class ProductsFormat extends Command
 		foreach ($products AS $product) {
 			if ($product->inventory) {
 				$inventory=($product->inventory->amount);
-				$cost=round($product->inventory->amount * $product->cost);
+				$cost=round($product->cost);
 			} else {
 				Inventory::create([
 					'amount'          =>0,
