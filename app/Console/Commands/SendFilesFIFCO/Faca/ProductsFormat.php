@@ -55,8 +55,8 @@ class ProductsFormat extends Command
 		env('SFTP_USERNAME',$localSysconf->sftp_username);
 		env('SFTP_PASSWORD',$localSysconf->sftp_password);
 		$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."productsFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
-		$products=Product::where('status','Activo')->where('florida',true)->get();
-		$sysconf=Sysconf::first();
+        $sysconf=Sysconf::first();
+        $products=Product::where('status','Activo')->where('florida',true)->get();
 			$this->info("cliente :".json_encode($sysconf));
 		foreach ($products AS $product) {
 			if ($product->inventory) {

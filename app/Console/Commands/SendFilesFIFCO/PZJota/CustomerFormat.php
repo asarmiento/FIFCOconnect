@@ -56,8 +56,8 @@ class CustomerFormat extends Command
 	    //	Excel::download();
 	    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."PZJota".DIRECTORY_SEPARATOR."customersFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 
-	    $sysconf=Sysconf::first();
-	    $customers=Customer::where('sysconf_id',$sysconf->id)->get();
+	    $sysconf=Sysconf::find(132);
+	    $customers=Customer::where('sysconf_id',$sysconf->id)->where('florida',true)->get();
 		    $this->info("cliente :".json_encode($sysconf));
 	    foreach ($customers AS $customer) {
 				$neighborhood = $customer->neighborhood;

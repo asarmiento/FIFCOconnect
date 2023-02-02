@@ -59,14 +59,14 @@ class SaleFormat extends Command
 			set_time_limit(0);
 			ini_set('memory_limit','94G');
 			$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."PZJota".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
-		$sysconf=Sysconf::first();
+		$sysconf=Sysconf::find(132);
 		if (Carbon::now()->toDateString() == '2022-10-18') {
 			$dates=historyMonths(Carbon::parse('2021-01-01')->toDateString(),Carbon::now()->toDateString());
 		} else {
 			$dates=historyMonths(Carbon::now()->subMonth(1)->firstOfMonth()->toDateString(),Carbon::now()->toDateString());
 
 		}
-		Log::info("fechas ".json_encode($dates));
+		//Log::info("fechas ".json_encode($dates));
 		$data=[];
 
 		foreach ($dates AS $date) {
@@ -74,8 +74,10 @@ class SaleFormat extends Command
 			$datef=Carbon::parse($date);
 
 			$productByInvoices=ProductsByInvoice::whereHas('invoice',function ($i) use ($sysconf,$datei,$datef) {
-				$i->whereBetween('date',[$datei->firstOfMonth()->toDateString(),
-					$datef->endOfMonth()->toDateString()])->where('invoice_type_id',2)->where('sysconf_id',$sysconf->id)->where('ind_estado','aceptado');
+				$i->whereBetween('date',[$datei->firstOfMonth()->toDateString(),$datef->endOfMonth()->toDateString()])
+                    ->where('invoice_type_id',2)
+                    ->where('sysconf_id',$sysconf->id)
+                    ->where('ind_estado','aceptado');
 			})->whereHas('product',function ($p){
                 $p->where('florida',true);
             })->where('delivered','>',0)->get();

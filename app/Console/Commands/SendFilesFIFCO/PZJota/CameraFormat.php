@@ -57,7 +57,7 @@ class CameraFormat extends Command
 		    env('SFTP_HOST',$localSysconf->sftp_host) ;
 		    env('SFTP_USERNAME',$localSysconf->sftp_username) ;
 		    env('SFTP_PASSWORD',$localSysconf->sftp_password) ;
-		    $sysconf = DB::connection('mysql_fifco')->table('sysconfs')->first();
+		    $sysconf = DB::connection('mysql_fifco')->table('sysconfs')->find(132);
 		    $this->info("cliente :".json_encode($sysconf));
 		    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."PZJota".DIRECTORY_SEPARATOR."camerasFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 		    $customers=CustomerEquipment::whereHas('customer',function ($c) use($sysconf){

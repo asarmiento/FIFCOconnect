@@ -54,10 +54,10 @@ class CustomerFormat extends Command
 	    env('SFTP_HOST',$localSysconf->sftp_host);
 	    env('SFTP_USERNAME',$localSysconf->sftp_username);
 	    env('SFTP_PASSWORD',$localSysconf->sftp_password);
-	    //	Excel::download();
+
 	    $fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."customersFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
-	    $customers=Customer::all();
-	    $sysconf=Sysconf::first();
+        $sysconf=Sysconf::first();
+        $customers=Customer::where('florida',true)->where('sysconf_id',$sysconf->id)->get();
 		    $this->info("cliente :".json_encode($sysconf));
 	    foreach ($customers AS $customer) {
 				$neighborhood = $customer->neighborhood;

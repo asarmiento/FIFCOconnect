@@ -13,4 +13,5 @@ class Sysconf extends Model
 
 	protected $connection='mysql';
 	use HasFactory;
+
 }
