@@ -64,10 +64,11 @@ class CameraFormat extends Command
 		    	$c->where('sysconf_id',$sysconf->id);
 		    })->get();
 		    foreach ($customers AS $customer) {
-			    $code=$customer->customer->code;
-			    $placa=$customer->placa;
-			    $texto="CR|$sysconf->code|$customer->id|$code|$placa\r\n";
-			    fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
+                $code=$customer->customer->code;
+                $id=$customer->customer->id;
+                $placa=$customer->placa;
+                $texto="CR|$sysconf->code|$id|$code|$placa\r\n";
+                fwrite($fh,$texto) or die("No se pudo escribir en el archivo");
 
 		    }
 
