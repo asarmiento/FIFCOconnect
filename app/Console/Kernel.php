@@ -20,6 +20,10 @@ class Kernel extends ConsoleKernel
 		'App\Console\Commands\SendFilesFIFCO\Alvasol\CameraFormat',
 		'App\Console\Commands\SendFilesFIFCO\Alvasol\ProductsFormat',
 		'App\Console\Commands\SendFilesFIFCO\Alvasol\SaleFormat',
+		'App\Console\Commands\SendFilesFIFCO\Azteka\CustomerFormat',
+		'App\Console\Commands\SendFilesFIFCO\Azteka\CameraFormat',
+		'App\Console\Commands\SendFilesFIFCO\Azteka\ProductsFormat',
+		'App\Console\Commands\SendFilesFIFCO\Azteka\SaleFormat',
 		'App\Console\Commands\SendFilesFIFCO\Jucasoto\CustomerFormat',
 		'App\Console\Commands\SendFilesFIFCO\Jucasoto\CameraFormat',
 		'App\Console\Commands\SendFilesFIFCO\Jucasoto\ProductsFormat',
@@ -65,6 +69,15 @@ class Kernel extends ConsoleKernel
 	    $schedule->command('Alvasol:productFormat')
 		    ->everyMinute();
 	    $schedule->command('Alvasol:saleFormat')
+		    ->everyMinute();
+
+	    $schedule->command('Azteka:CustomerFormat')
+		    ->everyMinute();
+	    $schedule->command('Azteka:cameraFormat')
+		    ->everyMinute();
+	    $schedule->command('Azteka:productFormat')
+		    ->everyMinute();
+	    $schedule->command('Azteka:saleFormat')
 		    ->everyMinute();
 
 	    $schedule->command('Elimurgue:CustomerFormat')
