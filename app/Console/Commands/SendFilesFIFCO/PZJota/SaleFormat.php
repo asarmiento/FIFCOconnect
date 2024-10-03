@@ -60,9 +60,9 @@ class SaleFormat extends Command
 			ini_set('memory_limit','94G');
 			$fh=fopen(storage_path("app".DIRECTORY_SEPARATOR."FIFCO".DIRECTORY_SEPARATOR."PZJota".DIRECTORY_SEPARATOR."salesFormat.txt"),'w') or die("Se produjo un error al crear el archivo");
 		$sysconf=Sysconf::find(132);
-		if (Carbon::now()->toDateString() == '2022-10-18') {
-			$dates=historyMonths(Carbon::parse('2021-01-01')->toDateString(),Carbon::now()->toDateString());
-		} else {
+        if (Carbon::now()->toDateString() == '2024-10-03') {
+            $dates=historyMonths(Carbon::parse('2023-01-01')->toDateString(),Carbon::now()->toDateString());
+        } else {
 			$dates=historyMonths(Carbon::now()->subMonth(1)->firstOfMonth()->toDateString(),Carbon::now()->toDateString());
 
 		}
