@@ -66,7 +66,7 @@ class SaleFormat extends Command
 			$dates=historyMonths(Carbon::now()->subMonth(1)->firstOfMonth()->toDateString(),Carbon::now()->toDateString());
 
 		}*/
-        $dates=historyMonths(Carbon::parse('2023-01-01')->toDateString(),Carbon::now()->toDateString());
+        $dates=historyMonths(Carbon::now()->subMonths(1)->toDateString(),Carbon::now()->toDateString());
         Log::info("fechas ".json_encode($dates));
 		$data=[];
 
