@@ -99,13 +99,13 @@ class Kernel extends ConsoleKernel
 		    ->everyMinute();
 
 	    $schedule->command('Virginia:CustomerFormat')
-		    ->everyMinute();
+		    ->dailyAt('23:00')->withoutOverlapping(360)->runInBackground();
 	    $schedule->command('Virginia:cameraFormat')
-		    ->everyMinute();
+		    ->dailyAt('23:10')->withoutOverlapping(360)->runInBackground();
 	    $schedule->command('Virginia:productFormat')
-		    ->everyMinute();
+		    ->dailyAt('23:20')->withoutOverlapping(360)->runInBackground();
 	    $schedule->command('Virginia:saleFormat')
-		    ->everyMinute();
+		    ->dailyAt('23:30')->withoutOverlapping(360)->runInBackground();
 
 	    $schedule->command('Jagris:CustomerFormat')
 		    ->everyMinute();
